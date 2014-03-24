@@ -1,6 +1,6 @@
 module.exports =  {
     // proxied url
-    proxy_url: "http://127.0.0.1:80",
+    proxy_url: "http://www.baidu.com",
 
     // use unsigned ssl connection
     "rejectUnauthorized": false,
@@ -9,7 +9,7 @@ module.exports =  {
     // Proxy server configurations
     ////////////////////////////////////
     // Which port listen to
-    "listen_port": 8081,
+    "listen_port": 9500,
     // Control HTTP max-Age header. Whether the browser cache static kibana files or not?
     // 0 for no-cache, unit in millisecond, default to 0
     // We strongly recommand you set to a larger number such as 2592000000(a month) to get a better loading speed
@@ -49,6 +49,6 @@ module.exports =  {
     // Enable? true or false
     "enable_cas_auth": true,
         // Point to the CAS authentication URL
-        "cas_server_url": "https://point-to-the-cas-server/cas",
+        "cas_server_url": "https://server_host/cas",
 
 };

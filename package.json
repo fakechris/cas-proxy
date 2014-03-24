@@ -1,6 +1,6 @@
 {
   "name": "cas-proxy",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Add CAS Authentication for web proxy",
   "main": "app.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "keywords": [
     "proxy",
-	"authentication"
+    "authentication"
   ],
   "author": "Chris Song",
   "license": "MIT",
@@ -21,6 +21,9 @@
     "http-proxy": "*",
     "casv2": "*"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/fakechris/cas-proxy/issues"
+  },
+  "homepage": "https://github.com/fakechris/cas-proxy"
 }

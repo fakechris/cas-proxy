@@ -29,11 +29,11 @@ var proxy = httpProxy.createProxyServer({
 
 config.hostname = url.parse(config.proxy_url).hostname;
 app.use(function(req, res, next) {
-  //console.log('proxying -->' + config.proxy_url);
   // modify req host header
   req['headers'].host = config.hostname;
+  req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
   proxy.web(req, res, { target: config.proxy_url }, function(e){
-    console.log('error '+e);
+    console.log('error '+ e);
   });
 });
 
