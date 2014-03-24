@@ -6,14 +6,14 @@
  * Project: https://github.com/fakechris/cas-proxy
  */
 
+var express = require('express');
 var https = require('https');
 var http = require('http');
+var url = require('url');
 var httpProxy = require('http-proxy');
 
 var config = require('./config');
-var app = function(req, res) {
-  httpProxy.web(req, res, { target: config.proxy_url });
-};
+var app = express();
 
 console.log('Server starting...');
 
@@ -22,6 +22,21 @@ app.use(express.session({ secret: config.cookie_secret }));
 
 // Authentication
 require('./lib/cas-auth.js').configureCas(express, app, config);
+
+var proxy = httpProxy.createProxyServer({
+  target: config.proxy_url
+});
+
+config.hostname = url.parse(config.proxy_url).hostname;
+app.use(function(req, res, next) {
+  //console.log('proxying -->' + config.proxy_url);
+  // modify req host header
+  req['headers'].host = config.hostname;
+  proxy.web(req, res, { target: config.proxy_url }, function(e){
+    console.log('error '+e);
+  });
+});
+
 
 run();
 
