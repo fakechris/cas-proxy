@@ -1,7 +1,8 @@
 module.exports =  {
     // proxied url
-    proxy_url: "http://www.baidu.com",
+    proxy_url: "http://127.0.0.1:8023",
 
+    replaceHostname: false,
     // use unsigned ssl connection
     "rejectUnauthorized": false,
 
@@ -49,6 +50,6 @@ module.exports =  {
     // Enable? true or false
     "enable_cas_auth": true,
         // Point to the CAS authentication URL
-        "cas_server_url": "https://server_host/cas",
+        "cas_server_url": "https://server_name/cas",
 
 };
