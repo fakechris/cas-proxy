@@ -21,6 +21,12 @@ Configuration
 
 All settings are placed in /config.js, hack it as you go.
 
+### Proxy Settings
+
+- ``proxy_url``: *The url proxy to*
+- ``replaceHostname``: *Enable replace Host in header use proxy url host*
+- ``rejectUnauthorized``: *Enable use unsigned ssl cas server*
+
 ### Client settings
 
 - ``listen_port``:  *The listen port of kibana3*
@@ -47,6 +53,6 @@ License
 =======
 CAS Proxy is freely distributable under the terms of the MIT license.
 
-Copyright (c) 2013 Chris Song
+Copyright (c) 2014 Chris Song
 
 See LICENCE for details.
