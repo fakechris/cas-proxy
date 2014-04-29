@@ -13,44 +13,46 @@ var url = require('url');
 var httpProxy = require('http-proxy');
 
 var config = require('./config');
-var app = express();
+var cas_auth = require('./lib/cas-auth.js');
 
 console.log('Server starting...');
-
-app.use(express.cookieParser());
-app.use(express.session({ secret: config.cookie_secret }));
-
-// Authentication
-require('./lib/cas-auth.js').configureCas(express, app, config);
-
-var proxy = httpProxy.createProxyServer({
-  target: config.proxy_url
-});
-
-config.hostname = url.parse(config.proxy_url).hostname;
-app.use(function(req, res, next) {
-  // modify req host header
-  if (config.replaceHostname) {
-    req['headers'].host = config.hostname;
-  }
-  req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
-  proxy.web(req, res, { target: config.proxy_url }, function(e){
-    console.log('error '+ e);
-  });
-});
-
 
 run();
 
 function run() {
-  if (config.enable_ssl_port === true) {
-    var options = {
-      key: fs.readFileSync(config.ssl_key_file),
-      cert: fs.readFileSync(config.ssl_cert_file),
-    };
-    https.createServer(options, app).listen(config.listen_port_ssl);
-    console.log('Server listening on ' + config.listen_port_ssl + '(SSL)');
+  for (i in config.proxy_settings) {
+    var subconfig = config.proxy_settings[i];
+    var app = express();
+    app.use(express.cookieParser());
+    app.use(express.session({ secret: config.cookie_secret }));
+
+    // Authentication
+    cas_auth.configureCas(express, app, config);
+
+    var proxy = httpProxy.createProxyServer({
+      target: subconfig.proxy_url
+    });
+
+    var proxied_hostname = url.parse(subconfig.proxy_url).hostname;
+    app.use(function(req, res, next) {
+      // modify req host header
+      if (config.replaceHostname) {
+        req['headers'].host = proxied_hostname;
+      }
+      req['headers'].http_x_forwarded_for = req.connection.remoteAddress;
+      proxy.web(req, res, { target: subconfig.proxy_url }, function(e){
+        console.log('error '+ e);
+      });
+    });
+    if (subconfig.enable_ssl_port === true) {
+      var options = {
+        key: fs.readFileSync(subconfig.ssl_key_file),
+        cert: fs.readFileSync(subconfig.ssl_cert_file),
+      };
+      https.createServer(options, app).listen(subconfig.listen_port_ssl);
+      console.log('Server listening on ' + subconfig.listen_port_ssl + '(SSL)');
+    }
+    http.createServer(app).listen(subconfig.listen_port);
+    console.log('Server listening on ' + subconfig.listen_port + ' -> ' + subconfig.proxy_url);
   }
-  http.createServer(app).listen(config.listen_port);
-  console.log('Server listening on ' + config.listen_port);
 }
