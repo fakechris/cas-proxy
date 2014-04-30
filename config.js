@@ -8,7 +8,8 @@ module.exports =  {
     // Cookies secret
     "cookie_secret": "REPLACE_WITH_A_RANDOM_STRING_PLEASE",
 
-    replaceHostname: false,
+    replaceHostname: true,
+
     // use unsigned ssl connection
     "rejectUnauthorized": false,
 
@@ -16,6 +17,8 @@ module.exports =  {
         {
         // proxied url
         proxy_url: "http://127.0.0.1:8023",
+
+        replaceHostname: false,
 
         // Which port listen to
         "listen_port": 9500,
