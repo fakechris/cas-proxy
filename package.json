@@ -1,6 +1,6 @@
 {
   "name": "cas-proxy",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Add CAS Authentication for web proxy",
   "main": "app.js",
   "scripts": {
